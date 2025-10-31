@@ -5,16 +5,29 @@ type qrVersionType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 
 
 type hexColorString = `#${string}`;
 
+type qrErrorCorrectionType = 'L' | 'M' | 'Q' | 'H';
+
+type qrMaskType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+
 export type QRRequestBody = {
     payload: string;
     version?: qrVersionType;
     lightcolor?: hexColorString;
     darkcolor?: hexColorString;
+    error?: qrErrorCorrectionType;
+    mask?: qrMaskType;
 }
 
 const validateQRRequest = (req: Request, res: Response): Result<QRRequestBody, string> => {
 
-    const { payload, version, lightcolor, darkcolor } = req.body;
+    const {
+        payload,
+        version,
+        lightcolor,
+        darkcolor,
+        error,
+        mask,
+    } = req.body;
 
     if (!payload) {
         return { success: false, error: "Missing 'payload' in request body" };
@@ -34,7 +47,15 @@ const validateQRRequest = (req: Request, res: Response): Result<QRRequestBody, s
         return { success: false, error: "'darkcolor' must be a valid hex color string" };
     }
 
-    return { success: true, data: { payload, version, lightcolor, darkcolor } };
+    if (error !== undefined && !['L', 'M', 'Q', 'H'].includes(error)) {
+        return { success: false, error: "'error' must be one of 'L', 'M', 'Q', 'H'" };
+    }
+
+    if (mask !== undefined && (!Number.isInteger(mask) || mask < 0 || mask > 7)) {
+        return { success: false, error: "'mask' must be an integer between 0 and 7" };
+    }
+
+    return { success: true, data: { payload, version, lightcolor, darkcolor, error, mask } };
 }
 
 export default validateQRRequest;

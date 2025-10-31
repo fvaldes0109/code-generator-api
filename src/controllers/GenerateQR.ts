@@ -8,10 +8,12 @@ const generateQR = async (body: QRRequestBody, res: Response): Promise<void> => 
 
     const qrDataUrl = await QRCode.toDataURL(payload, {
       version: version || undefined,
-        color: {
-            light: lightcolor || "#FFFFFF",
-            dark: darkcolor || "#000000",
-        },
+      color: {
+        light: lightcolor || "#FFFFFF",
+        dark: darkcolor || "#000000",
+      },
+      errorCorrectionLevel: body.error || undefined,
+      maskPattern: body.mask || undefined,
     });
 
     res.status(200).json({
