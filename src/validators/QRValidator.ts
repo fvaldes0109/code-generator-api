@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
 import { Result } from "../utils/types";
 
-type qrVersionType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40;
+const qrVersions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40] as const;
+type qrVersionType = typeof qrVersions[number];
 
-type qrErrorCorrectionType = "L" | "M" | "Q" | "H";
+const errorCorrections = ["L", "M", "Q", "H"] as const;
+type qrErrorCorrectionType = typeof errorCorrections[number];
 
-type qrMaskType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+const qrMasks = [0, 1, 2, 3, 4, 5, 6, 7] as const;
+type qrMaskType = typeof qrMasks[number];
 
 export type QRRequestBody = {
   payload: string;
@@ -34,10 +37,10 @@ const validateQRRequest = (
     };
   }
 
-  if (error !== undefined && !["L", "M", "Q", "H"].includes(error)) {
+  if (error !== undefined && !errorCorrections.includes(error)) {
     return {
       success: false,
-      error: "'error' must be one of 'L', 'M', 'Q', 'H'",
+      error: `'error' must be one of ${errorCorrections.join(', ')}`,
     };
   }
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Result } from "../utils/types";
 
-const barcodeFormats = [ 'CODE128', 'CODE39', 'MSI', 'codabar' ];
+const barcodeFormats = [ 'CODE128', 'CODE39', 'MSI', 'codabar' ] as const;
 
 type barcodeFormatType = typeof barcodeFormats[number];
 
