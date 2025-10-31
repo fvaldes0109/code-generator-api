@@ -1,0 +1,1 @@
+https://github.com/Automattic/node-canvas requirements pal canvas
