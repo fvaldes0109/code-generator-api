@@ -1,19 +1,10 @@
 import { Request, Response } from "express";
 import QRCode from "qrcode";
+import { QRRequestBody } from '../validators/QRValidator';
 
-export const generateQR = async (req: Request, res: Response): Promise<void> => {
+const generateQR = async (body: QRRequestBody, res: Response): Promise<void> => {
   try {
-    const { payload, version, lightcolor, darkcolor } = req.body;
-
-    if (version && (version < 1 || version > 40 || !Number.isInteger(version))) {
-        res.status(400).json({ error: "'version' must be an integer between 1 and 40" });
-        return;
-    }
-
-    if (!payload) {
-      res.status(400).json({ error: "Missing 'payload' in request body" });
-      return;
-    }
+    const { payload, version, lightcolor, darkcolor } = body;
 
     const qrDataUrl = await QRCode.toDataURL(payload, {
       version: version || undefined,
@@ -33,3 +24,5 @@ export const generateQR = async (req: Request, res: Response): Promise<void> => 
     });
   }
 };
+
+export default generateQR;
