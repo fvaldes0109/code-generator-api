@@ -1,4 +1,4 @@
-# QR/Barcode Code Generator API
+# QR/Barcode Generator API
 
 An API to generate QR codes and barcodes from given payloads.
 
