@@ -22,6 +22,12 @@ npm install
 npm run dev
 ```
 
+## Testing
+
+```bash
+npm run test
+```
+
 ## API Documentation
 
 <https://documenter.getpostman.com/view/16824302/2sB3WpQ1A3>
